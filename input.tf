@@ -37,6 +37,12 @@ variable "minimum_tls_version" {
   default     = "1.2"
 }
 
+variable "patch_schedule" {
+  type        = any
+  description = "The patch schedule block if declared"
+  default     = null
+}
+
 variable "private_static_ip_address" {
   type        = bool
   description = "Whether a static ip should be used if this redis cache is connected to a subnet"
@@ -52,7 +58,7 @@ variable "public_network_access_enabled" {
 variable "redis_configuration" {
   description = "The redis configuration block"
   type        = any
-  default     = {}
+  default     = null
 }
 
 variable "redis_name" {

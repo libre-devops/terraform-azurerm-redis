@@ -9,8 +9,8 @@ module "rg" {
 }
 
 resource "random_string" "random" {
-  length      = 6
-  special     = false
+  length  = 6
+  special = false
 }
 
 module "redis" {
@@ -20,9 +20,13 @@ module "redis" {
   location = module.rg.rg_location
   tags     = module.rg.rg_tags
 
+  capacity      = 0
+  family        = "C"
+  redis_name    = "lbdoredis${random_string.random.result}"
+  sku           = "Basic"
+  identity_type = "SystemAssigned"
 
-  capacity   = 0
-  family     = "C"
-  redis_name = "lbdoredis${random_string.random.result}"
-  sku        = "Basic"
+  redis_configuration = {
+    aof_backup_enabled = false
+  }
 }

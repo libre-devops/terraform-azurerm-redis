@@ -14,7 +14,7 @@ resource "random_string" "random" {
 }
 
 module "redis" {
-  source = "../../"
+  source = "registry.terraform.io/libre-devops/redis/azurerm"
 
   rg_name  = module.rg.rg_name
   location = module.rg.rg_location

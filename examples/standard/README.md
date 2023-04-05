@@ -9,7 +9,29 @@ module "rg" {
 
   #  lock_level = "CanNotDelete" // Do not set this value to skip lock
 }
-```
+
+resource "random_string" "random" {
+  length  = 6
+  special = false
+}
+
+module "redis" {
+  source = "registry.terraform.io/libre-devops/redis/azurerm"
+
+  rg_name  = module.rg.rg_name
+  location = module.rg.rg_location
+  tags     = module.rg.rg_tags
+
+  capacity      = 0
+  family        = "C"
+  redis_name    = "lbdoredis${random_string.random.result}"
+  sku           = "Basic"
+  identity_type = "SystemAssigned"
+
+  redis_configuration = {
+    aof_backup_enabled = false
+  }
+}```
 ## Requirements
 
 No requirements.
@@ -18,18 +40,21 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.50.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.4.3 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_redis"></a> [redis](#module\_redis) | registry.terraform.io/libre-devops/redis/azurerm | n/a |
 | <a name="module_rg"></a> [rg](#module\_rg) | registry.terraform.io/libre-devops/rg/azurerm | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [azurerm_client_config.current_creds](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.mgmt_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.mgmt_local_admin_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |

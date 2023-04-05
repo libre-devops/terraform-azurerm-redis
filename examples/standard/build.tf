@@ -7,3 +7,22 @@ module "rg" {
 
   #  lock_level = "CanNotDelete" // Do not set this value to skip lock
 }
+
+resource "random_string" "random" {
+  length      = 6
+  special     = false
+}
+
+module "redis" {
+  source = "../../"
+
+  rg_name  = module.rg.rg_name
+  location = module.rg.rg_location
+  tags     = module.rg.rg_tags
+
+
+  capacity   = 0
+  family     = "C"
+  redis_name = "lbdoredis${random_string.random.result}"
+  sku        = "Basic"
+}

@@ -31,7 +31,8 @@ module "redis" {
   redis_configuration = {
     aof_backup_enabled = false
   }
-}```
+}
+```
 ## Requirements
 
 No requirements.
